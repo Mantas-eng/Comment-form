@@ -3,6 +3,7 @@ Komentarų forma leidžia vartotojams palikti komentarus svetainėje
 
 <img src="./images/1.png"/>
 <img src="./images/2.png"/>
+<img src="./images/3.png"/>
 
 ## Naudojimas
 Ši FORMA sukurta naudojant Bootstrap. Ji naudoja Font Awesome ikonoms.
