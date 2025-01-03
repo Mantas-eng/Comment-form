@@ -3,7 +3,7 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
 
     const formData = new FormData(this);
 
-    fetch('https://pacific-springs-15861-df7e1201a420.herokuapp.com/', {
+    fetch('save_comment.php', {
         method: 'POST',
         body: formData,
     })
@@ -23,7 +23,7 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
 });
 
 function loadComments() {
-    fetch('https://pacific-springs-15861-df7e1201a420.herokuapp.com/')
+    fetch('load_comments.php')
         .then((response) => response.text())
         .then((data) => {
             document.getElementById('comments').innerHTML = data;
@@ -81,7 +81,7 @@ document.addEventListener('submit', function (e) {
 
         const formData = new FormData(e.target);
 
-        fetch('https://pacific-springs-15861-df7e1201a420.herokuapp.com/', {
+        fetch('save_comment.php', {
             method: 'POST',
             body: formData,
         })
@@ -108,7 +108,7 @@ function addCommentFormSubmitListener() {
 
         const formData = new FormData(this);
 
-        fetch('https://pacific-springs-15861-df7e1201a420.herokuapp.com/', {
+        fetch('save_comment.php', {
             method: 'POST',
             body: formData,
         })
