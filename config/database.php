@@ -4,7 +4,7 @@ function get_db_connection() {
     $host = 'gp96xszpzlqupw4k.cbetxkdyhwsb.us-east-1.rds.amazonaws.com';
     $user = 'd1h5t0yoywxh7daf';
     $pass = 'mocg4v8i04t8vh2y';
-    $dbname = 'ui2butiwnvviyfgw';
+    $dbname = 'mano_baze';
 
     // Sukurkite ryšį su duomenų baze
     $conn = new mysqli($host, $user, $pass, $dbname);

@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost';
+$host = 'gp96xszpzlqupw4k.cbetxkdyhwsb.us-east-1.rds.amazonaws.com';
 $db = 'mano_baze';
 $user = 'root';
 $pass = '';
