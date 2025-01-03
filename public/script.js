@@ -3,7 +3,7 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
 
     const formData = new FormData(this);
 
-    fetch('/save_comment.php', {
+    fetch('/public/save_comment.php', {
         method: 'POST',
         body: formData,
     })
@@ -20,7 +20,7 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
 });
 
 function loadComments() {
-    fetch('/load_comments.php')
+    fetch('/public/load_comments.php')
         .then((response) => response.text())
         .then((data) => {
             document.getElementById('comments').innerHTML = data;
@@ -83,7 +83,7 @@ document.addEventListener('submit', function (e) {
 
         const formData = new FormData(e.target);
 
-        fetch('/save_comment.php', {
+        fetch('/public/save_comment.php', {
             method: 'POST',
             body: formData,
         })
@@ -151,7 +151,7 @@ function addCommentFormSubmitListener() {
 
         const formData = new FormData(this);
 
-        fetch('/save_comment.php', {
+        fetch('/public/save_comment.php', {
             method: 'POST',
             body: formData,
         })
