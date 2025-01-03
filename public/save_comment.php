@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-$host = 'gp96xszpzlqupw4k.cbetxkdyhwsb.us-east-1.rds.amazonaws.com';
+$host = 'https://pacific-springs-15861-df7e1201a420.herokuapp.com/';
 $db = 'mano_baze';
 $user = 'root';
 $pass = '';
