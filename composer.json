@@ -1,8 +1,8 @@
 {
-    "name": "Mantas",
-    "description": "comment section app",
+    "name": "your-username/your-app-name",
+    "description": "A simple comment section app",
     "require": {
-      "php": "^7.4",
+      "php": "^8.2",
       "ext-mysqli": "*"
     },
     "scripts": {
