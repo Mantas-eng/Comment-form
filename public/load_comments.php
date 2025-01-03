@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost';
+$host = 'mysql://d1h5t0yoywxh7daf:mocg4v8i04t8vh2y@gp96xszpzlqupw4k.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/ui2butiwnvviyfgw';
 $db = 'mano_baze';
 $user = 'root';
 $pass = '';
