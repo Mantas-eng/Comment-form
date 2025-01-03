@@ -3,7 +3,7 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
 
     const formData = new FormData(this);
 
-    fetch('/public/save_comment.php', {
+    fetch('save_comment.php', {
         method: 'POST',
         body: formData,
     })
@@ -16,14 +16,20 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
                 loadComments();
                 this.reset();
             }
+        })
+        .catch(error => {
+            alert('An error occurred: ' + error);
         });
 });
 
 function loadComments() {
-    fetch('/public/load_comments.php')
+    fetch('load_comments.php')
         .then((response) => response.text())
         .then((data) => {
             document.getElementById('comments').innerHTML = data;
+        })
+        .catch(error => {
+            alert('Failed to load comments: ' + error);
         });
 }
 
@@ -66,14 +72,6 @@ document.addEventListener('click', function (e) {
         const parentComment = document.getElementById(`comment-${parentId}`);
         parentComment.querySelector('.reply-form')?.remove(); 
         parentComment.insertAdjacentHTML('beforeend', replyFormHTML);
-
-        const commentForm = document.getElementById('comment-form');
-        if (commentForm) {
-            const commentSection = commentForm.closest('section');
-            if (commentSection) {
-                commentSection.remove(); 
-            }
-        }
     }
 });
 
@@ -83,7 +81,7 @@ document.addEventListener('submit', function (e) {
 
         const formData = new FormData(e.target);
 
-        fetch('/public/save_comment.php', {
+        fetch('save_comment.php', {
             method: 'POST',
             body: formData,
         })
@@ -96,51 +94,10 @@ document.addEventListener('submit', function (e) {
                     loadComments();
 
                     e.target.closest('.reply-form').remove();
-
-                    const commentFormHTML = `
-                        <section class="py-5 bg-light">
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-8">
-                                        <div class="contact-form p-4 shadow-sm bg-white rounded">
-                                            <form id="comment-form" class="mb-4">
-                                                <div class="row g-3">
-                                                    <div class="col-12 col-md-6 fl_icon">
-                                                        <div class="form-group">
-                                                            <div class="icon"><i class="fa fa-user"></i></div>
-                                                            <input type="text" name="username" id="username" class="form-input" placeholder="Your Name" required>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-12 col-md-6 fl_icon">
-                                                        <div class="form-group">
-                                                            <div class="icon"><i class="fa fa-envelope"></i></div>
-                                                            <input type="email" name="email" id="email" class="form-input" placeholder="Your Email" required>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-12">
-                                                        <div class="form-group fl_icon">
-                                                            <textarea name="comment" id="comment" class="form-input" rows="5" placeholder="Your Comment" required></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    <input type="hidden" name="parent_id" id="parent-id" value="0">
-
-                                                    <div class="col-12">
-                                                        <button class="btn-submit" type="submit">Submit Comment</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    `;
-                    document.querySelector('.container').insertAdjacentHTML('afterbegin', commentFormHTML);
-                    addCommentFormSubmitListener(); 
                 }
+            })
+            .catch(error => {
+                alert('An error occurred while submitting your reply: ' + error);
             });
     }
 });
@@ -151,7 +108,7 @@ function addCommentFormSubmitListener() {
 
         const formData = new FormData(this);
 
-        fetch('/public/save_comment.php', {
+        fetch('save_comment.php', {
             method: 'POST',
             body: formData,
         })
@@ -164,6 +121,9 @@ function addCommentFormSubmitListener() {
                     loadComments();
                     this.reset();
                 }
+            })
+            .catch(error => {
+                alert('An error occurred: ' + error);
             });
     });
 }

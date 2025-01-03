@@ -48,7 +48,7 @@ function render_comments($comments, $conn)
         echo "<p><strong>" . htmlspecialchars($comment['username']) . "</strong>: " . htmlspecialchars($comment['comment']) . "</p>";
         echo "<div class='d-flex justify-content-between align-items-center'>";
         echo "<small class='text-muted'>Posted on: " . htmlspecialchars($comment['created_at']) . "</small>";
-        echo "<button class='btn  m-3 reply-btn mt-2' data-id='" . $comment['id'] . "'>Reply</button>";
+        echo "<button class='btn m-3 reply-btn mt-2' data-id='" . $comment['id'] . "'>Reply</button>";
         echo "</div>";
 
         $replies = fetch_comments($comment['id'], $conn);
@@ -57,14 +57,6 @@ function render_comments($comments, $conn)
             render_comments($replies, $conn);
             echo "</div>";
         }
-
-        echo "<div class='reply-form' id='reply-form-{$comment['id']}'>
-                <form class='mt-2' data-parent-id='{$comment['id']}'>
-                    <div class='mb-3'>
-                    </div>
-                    <input type='hidden' name='parent_id' value='{$comment['id']}'>
-                </form>
-              </div>";
 
         echo "</div>";
         echo "</div>";
@@ -76,3 +68,4 @@ function render_comments($comments, $conn)
 render_comments($comments, $conn);
 
 $conn->close();
+?>
