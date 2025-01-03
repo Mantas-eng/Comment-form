@@ -1,5 +1,5 @@
 <?php
-$host = 'https://pacific-springs-15861-df7e1201a420.herokuapp.com/';
+$host = 'https://pacific-springs-15861-df7e1201a420.herokuapp.com';
 $db = 'mano_baze';
 $user = 'root';
 $pass = '';
