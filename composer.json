@@ -4,5 +4,8 @@
     "require": {
         "php": "^8.2",
         "ext-mysqli": "*"
+    },
+    "platform": {
+        "php": "8.2.*"
     }
 }
