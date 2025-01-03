@@ -3,7 +3,7 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
 
     const formData = new FormData(this);
 
-    fetch('save_comment.php', {
+    fetch('https://pacific-springs-15861-df7e1201a420.herokuapp.com/', {
         method: 'POST',
         body: formData,
     })
@@ -81,7 +81,7 @@ document.addEventListener('submit', function (e) {
 
         const formData = new FormData(e.target);
 
-        fetch('save_comment.php', {
+        fetch('https://pacific-springs-15861-df7e1201a420.herokuapp.com/', {
             method: 'POST',
             body: formData,
         })
@@ -108,7 +108,7 @@ function addCommentFormSubmitListener() {
 
         const formData = new FormData(this);
 
-        fetch('save_comment.php', {
+        fetch('https://pacific-springs-15861-df7e1201a420.herokuapp.com/', {
             method: 'POST',
             body: formData,
         })
