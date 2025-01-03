@@ -1,0 +1,14 @@
+{
+    "name": "Mantas",
+    "description": "comment section app",
+    "require": {
+      "php": "^7.4",
+      "ext-mysqli": "*"
+    },
+    "scripts": {
+      "post-install-cmd": [
+        "php artisan migrate"
+      ]
+    }
+  }
+  
