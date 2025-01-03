@@ -1,14 +1,8 @@
 {
-    "name": "your-username/your-app-name",
+    "name": "yourusername/your-app-name",
     "description": "A simple comment section app",
     "require": {
-      "php": "^8.2",
-      "ext-mysqli": "*"
-    },
-    "scripts": {
-      "post-install-cmd": [
-        "php artisan migrate"
-      ]
+        "php": "^8.2",
+        "ext-mysqli": "*"
     }
-  }
-  
+}
