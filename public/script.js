@@ -23,7 +23,7 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
 });
 
 function loadComments() {
-    fetch('load_comments.php')
+    fetch('https://pacific-springs-15861-df7e1201a420.herokuapp.com/')
         .then((response) => response.text())
         .then((data) => {
             document.getElementById('comments').innerHTML = data;
