@@ -30,6 +30,13 @@ function loadComments() {
 document.addEventListener('click', function (e) {
     if (e.target.classList.contains('reply-btn')) {
         const parentId = e.target.getAttribute('data-id');
+        const parentComment = document.getElementById(`comment-${parentId}`);
+
+        if (parentComment.querySelector('.reply-form')) {
+            alert('Jūs jau atsakėte į šį komentarą.');
+            return; 
+        }
+
         const replyFormHTML = `
             <div class="container-fluid d-flex justify-content-center align-items-center">
                 <div class="p-4 bg-white border rounded shadow-sm">
@@ -63,10 +70,6 @@ document.addEventListener('click', function (e) {
             </div>
         `;
 
-        const parentComment = document.getElementById(`comment-${parentId}`);
-        parentComment.querySelector('.reply-form')?.remove(); 
-        parentComment.insertAdjacentHTML('beforeend', replyFormHTML);
-
         const commentForm = document.getElementById('comment-form');
         if (commentForm) {
             const commentSection = commentForm.closest('section');
@@ -74,6 +77,10 @@ document.addEventListener('click', function (e) {
                 commentSection.remove(); 
             }
         }
+
+        parentComment.insertAdjacentHTML('beforeend', replyFormHTML);
+
+        e.target.disabled = true;
     }
 });
 
@@ -96,6 +103,12 @@ document.addEventListener('submit', function (e) {
                     loadComments();
 
                     e.target.closest('.reply-form').remove();
+
+                    const parentId = e.target.getAttribute('data-parent-id');
+                    const parentComment = document.getElementById(`comment-${parentId}`);
+                    const replyBtn = parentComment.querySelector('.reply-btn');
+
+                    replyBtn.disabled = false;
 
                     const commentFormHTML = `
                         <section class="py-5 bg-light">
@@ -139,7 +152,7 @@ document.addEventListener('submit', function (e) {
                         </section>
                     `;
                     document.querySelector('.container').insertAdjacentHTML('afterbegin', commentFormHTML);
-                    addCommentFormSubmitListener(); 
+                    addCommentFormSubmitListener();
                 }
             });
     }

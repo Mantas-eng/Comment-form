@@ -1,20 +1,15 @@
 <?php
-// Gauti ClearDB duomenų bazės prisijungimo informaciją iš aplinkos kintamųjų Heroku
-$cleardb_url = parse_url(getenv("gp96xszpzlqupw4k.cbetxkdyhwsb.us-east-1.rds.amazonaws.com"));
-$host = $cleardb_url["gp96xszpzlqupw4k.cbetxkdyhwsb.us-east-1.rds.amazonaws.com"];
-$user = $cleardb_url["admin"];
-$pass = $cleardb_url["pass"];
-$db = substr($cleardb_url["path"], 1);
+$host = 'localhost';
+$db = 'mano_baze';
+$user = 'root';
+$pass = '';
 
-// Prisijungti prie duomenų bazės
 $conn = new mysqli($host, $user, $pass, $db);
 
-// Patikrinti klaidas
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Funkcija, skirta gauti komentarus
 function fetch_comments($parent_id = 0, $conn)
 {
     $sql = "SELECT * FROM comments WHERE parent_id = ? ORDER BY created_at DESC";
@@ -31,10 +26,14 @@ function fetch_comments($parent_id = 0, $conn)
     return $comments;
 }
 
-// Gauti visus komentarus
+$sql_total = "SELECT COUNT(*) as total FROM comments";
+$result_total = $conn->query($sql_total);
+$total_comments = $result_total->fetch_assoc()['total'];
+
+echo "<h5 id='total-comments'>Comments: {$total_comments}</h5>";
+
 $comments = fetch_comments(0, $conn);
 
-// Funkcija, kuri išveda komentarus
 function render_comments($comments, $conn)
 {
     foreach ($comments as $comment) {
@@ -42,13 +41,13 @@ function render_comments($comments, $conn)
         echo "<div class='card-body'>";
         echo "<div class='d-flex flex-column flex-sm-row'>";
 
-        $avatar_url = !empty($comment['avatar_url']) ? $comment['avatar_url'] : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'; 
+        $avatar_url = !empty($comment['avatar_url']) ? $comment['avatar_url'] : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';  // Gravatar numatytas avataras
         echo "<img class='rounded-circle shadow-1-strong me-3 mb-3 mb-sm-0' src='{$avatar_url}' alt='avatar' width='50' height='50' />";
 
         echo "<div class='flex-grow-1'>";
         echo "<p><strong>" . htmlspecialchars($comment['username']) . "</strong>: " . htmlspecialchars($comment['comment']) . "</p>";
         echo "<div class='d-flex justify-content-between align-items-center'>";
-        echo "<small class='text-muted'>Posted on: " . date('F j, Y, g:i a', strtotime($comment['created_at'])) . "</small>";
+        echo "<small class='text-muted'>Posted on: " . htmlspecialchars($comment['created_at']) . "</small>";
         echo "<button class='btn m-3 reply-btn mt-2' data-id='" . $comment['id'] . "'>Reply</button>";
         echo "</div>";
 
@@ -66,9 +65,7 @@ function render_comments($comments, $conn)
     }
 }
 
-// Išvesti komentarus
 render_comments($comments, $conn);
 
-// Uždaryti prisijungimą prie duomenų bazės
 $conn->close();
 ?>
