@@ -7,10 +7,10 @@ RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 # Įjungiame Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Nustatome darbo katalogą į public
+# Nustatome darbo katalogą į /var/www/html
 WORKDIR /var/www/html
 
-# Kopijuojame failus iš vietinio public katalogo į Docker konteinerį
+# Kopijuojame failus iš vietinio projekto katalogo į Docker konteinerį
 COPY . /var/www/html/
 
 # Uždaryti Apache serverį
