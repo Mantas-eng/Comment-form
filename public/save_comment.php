@@ -17,7 +17,7 @@ $pass = $_ENV['DB_PASS'];
 $conn = pg_connect("host=$host port=$port dbname=$db user=$user password=$pass");
 
 if (!$conn) {
-    die("Connection failed: " . pg_last_error());
+    die(json_encode(["error" => "Connection failed: " . pg_last_error()]));
 }
 
 // Tikriname, ar gauti reikalingi duomenys iš POST užklausos
@@ -36,15 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = pg_query_params($conn, $sql, array($username, $comment, $parent_id));
 
         if ($result) {
-            echo "Comment saved successfully!";
+            // Sėkmingai įrašytas komentaras, grąžiname sėkmės atsakymą
+            echo json_encode(["success" => true, "message" => "Comment saved successfully!"]);
         } else {
-            echo "Error saving comment: " . pg_last_error($conn);
+            // Klaidos atveju grąžiname klaidos pranešimą
+            echo json_encode(["error" => "Error saving comment: " . pg_last_error($conn)]);
         }
     } else {
-        echo "Username and comment are required!";
+        // Jei trūksta būtino lauko
+        echo json_encode(["error" => "Username and comment are required!"]);
     }
 } else {
-    echo "Invalid request method!";
+    // Jei užklausa nėra POST tipo
+    echo json_encode(["error" => "Invalid request method!"]);
 }
 
 // Uždarome prisijungimą prie duomenų bazės
