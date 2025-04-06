@@ -6,33 +6,15 @@ services:
       dockerfile: Dockerfile
     container_name: php-comments
     environment:
-      DB_HOST: dpg-cvp9bhgdl3ps73fumvmg-a
+      DB_HOST: dpg-cvp9bhgdl3ps73fumvmg-a.ohio-postgres.render.com  # Naudokite išorinį PostgreSQL serverio URL
       DB_NAME: mano_baze
       DB_USER: mano_baze_user
-      DB_PASS: yourpassword
+      DB_PASS: DRMN3D1p9QtJpttdZTAFFNqPdJb6jYux  # Naudokite tikrą slaptažodį
     ports:
       - "8080:80"
-    depends_on:
-      -dpg-cvp9bhgdl3ps73fumvmg-a
-    networks:
-      - app-network
-
-  postgres:
-    image: postgres:13
-    container_name: dpg-cvp9bhgdl3ps73fumvmg-a
-    environment:
-      POSTGRES_PASSWORD: yourpassword
-      POSTGRES_USER: mano_baze_user
-      POSTGRES_DB: mano_baze
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  postgres-data:
-    driver: local
