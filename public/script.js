@@ -88,7 +88,8 @@ document.addEventListener('submit', function (e) {
     if (e.target.classList.contains('reply-form')) {
         e.preventDefault();
 
-        const formData = new FormData(e.target);
+        const formData
+         = new FormData(e.target);
 
         fetch('save_comment.php', {
             method: 'POST',
@@ -182,3 +183,4 @@ function addCommentFormSubmitListener() {
 }
 
 loadComments();
+    
