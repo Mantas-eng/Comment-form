@@ -7,7 +7,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Gauti duomenų bazės prisijungimo informaciją iš .env failo
-$host = $_ENV['DB_HOST'];
+$host = 'mysql';  // Naudojame 'mysql', nes Docker Compose tinklui suteikėme tokią pavadinimo reikšmę
 $db = $_ENV['DB_NAME'];
 $user = $_ENV['DB_USER'];
 $pass = $_ENV['DB_PASS'];
