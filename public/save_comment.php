@@ -46,7 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Jei trūksta būtino lauko
         echo json_encode(["error" => "Username and comment are required!"]);
     }
+} else {
+    // Jei užklausa nėra POST tipo
+    echo json_encode(["error" => "Invalid request method!"]);
 }
+
 // Uždarome prisijungimą prie duomenų bazės
 pg_close($conn);
 ?>
