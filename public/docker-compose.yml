@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: your_password_here
+      MYSQL_DATABASE: mano_baze
+    ports:
+      - "3306:3306"
