@@ -7,17 +7,17 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Gauti duomenų bazės prisijungimo informaciją iš .env failo
-$host = 'mysql';  // Naudojame 'mysql', nes Docker Compose tinklui suteikėme tokią pavadinimo reikšmę
+$host = $_ENV['DB_HOST'];  // Naudojame duomenis iš .env failo
+$port = $_ENV['DB_PORT'];  // PostgreSQL portas
 $db = $_ENV['DB_NAME'];
 $user = $_ENV['DB_USER'];
 $pass = $_ENV['DB_PASS'];
 
-// Prisijungimas prie duomenų bazės
-$conn = new mysqli($host, $user, $pass, $db);
+// Sukuriame PostgreSQL prisijungimą
+$conn = pg_connect("host=$host port=$port dbname=$db user=$user password=$pass");
 
-// Patikriname, ar prisijungimas pavyko
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!$conn) {
+    die("Connection failed: " . pg_last_error());
 }
 
 // Tikriname, ar gauti reikalingi duomenys iš POST užklausos
@@ -30,24 +30,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Patikriname, ar visi būtini laukai yra užpildyti
     if (!empty($username) && !empty($comment)) {
         // SQL užklausa komentarų įrašymui į duomenų bazę
-        $sql = "INSERT INTO comments (username, comment, parent_id, created_at) VALUES (?, ?, ?, NOW())";
-        $stmt = $conn->prepare($sql);
+        $sql = "INSERT INTO comments (username, comment, parent_id, created_at) VALUES ($1, $2, $3, NOW())";
+        
+        // Sukuriame paruoštą užklausą
+        $result = pg_query_params($conn, $sql, array($username, $comment, $parent_id));
 
-        if ($stmt === false) {
-            die("Error preparing statement: " . $conn->error);
-        }
-
-        // Susiejame parametrus su užklausa
-        $stmt->bind_param("ssi", $username, $comment, $parent_id);
-
-        // Atlikti užklausą
-        if ($stmt->execute()) {
+        if ($result) {
             echo "Comment saved successfully!";
         } else {
-            echo "Error saving comment: " . $stmt->error;
+            echo "Error saving comment: " . pg_last_error($conn);
         }
-
-        $stmt->close();
     } else {
         echo "Username and comment are required!";
     }
@@ -56,5 +48,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Uždarome prisijungimą prie duomenų bazės
-$conn->close();
+pg_close($conn);
 ?>

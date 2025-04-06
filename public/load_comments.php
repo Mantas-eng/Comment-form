@@ -1,51 +1,52 @@
 <?php
 // Įtraukti autoloader'į, jei naudojate Composer
-// Naudoti Dotenv, kad nuskaitytumėte .env failą
 require_once __DIR__ . '/vendor/autoload.php';
+
+// Naudoti Dotenv, kad nuskaitytumėte .env failą
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Gauti duomenų bazės prisijungimo informaciją iš .env failo
-$host = $_ENV['DB_HOST']; // Šis turėtų būti 'mysql', kaip nurodyta docker-compose.yml
+$host = $_ENV['DB_HOST'];
+$port = $_ENV['DB_PORT'];
 $db = $_ENV['DB_NAME'];
 $user = $_ENV['DB_USER'];
 $pass = $_ENV['DB_PASS'];
 
-// Prisijungimas prie duomenų bazės
-$conn = new mysqli($host, $user, $pass, $db);
+// Sukuriame prisijungimą prie PostgreSQL
+$conn = pg_connect("host=$host port=$port dbname=$db user=$user password=$pass");
 
 // Patikriname, ar prisijungimas pavyko
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!$conn) {
+    die("Connection failed: " . pg_last_error());
 }
 
 // Funkcija, kuri užklausia komentarus iš duomenų bazės
 function fetch_comments($conn, $parent_id = 0)
 {
-    $sql = "SELECT * FROM comments WHERE parent_id = ? ORDER BY created_at DESC";
-    $stmt = $conn->prepare($sql);
-    if ($stmt === false) {
-        die("Error preparing statement: " . $conn->error);
+    $sql = "SELECT * FROM comments WHERE parent_id = $1 ORDER BY created_at DESC";
+    $result = pg_query_params($conn, $sql, array($parent_id));
+
+    if (!$result) {
+        die("Error executing query: " . pg_last_error());
     }
-    $stmt->bind_param("i", $parent_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
 
     $comments = [];
-    while ($row = $result->fetch_assoc()) {
+    while ($row = pg_fetch_assoc($result)) {
         $comments[] = $row;
     }
-    $stmt->close();
     return $comments;
 }
 
 // Užklausa visų komentarų kiekio
 $sql_total = "SELECT COUNT(*) as total FROM comments";
-$result_total = $conn->query($sql_total);
-if ($result_total === false) {
-    die("Error querying total comments: " . $conn->error);
+$result_total = pg_query($conn, $sql_total);
+
+if (!$result_total) {
+    die("Error querying total comments: " . pg_last_error());
 }
-$total_comments = $result_total->fetch_assoc()['total'];
+
+$total_comments = pg_fetch_assoc($result_total)['total'];
 
 // Rodyti bendrą komentarų kiekį
 echo "<h5 id='total-comments'>Comments: {$total_comments}</h5>";
@@ -89,5 +90,5 @@ function render_comments($comments, $conn)
 }
 
 // Uždarome prisijungimą prie duomenų bazės
-$conn->close();
+pg_close($conn);
 ?>

@@ -6,25 +6,26 @@ services:
       dockerfile: Dockerfile
     container_name: php-comments
     environment:
-      DB_HOST: mysql
+      DB_HOST: dpg-cvp9bhgdl3ps73fumvmg-a
       DB_NAME: mano_baze
-      DB_USER: root
-      DB_PASS: rootpassword
+      DB_USER: mano_baze_user
+      DB_PASS: yourpassword
     ports:
       - "8080:80"
     depends_on:
-      - mysql
+      -dpg-cvp9bhgdl3ps73fumvmg-a
     networks:
       - app-network
 
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
+  postgres:
+    image: postgres:13
+    container_name: dpg-cvp9bhgdl3ps73fumvmg-a
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mano_baze
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_USER: mano_baze_user
+      POSTGRES_DB: mano_baze
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - app-network
 
@@ -33,5 +34,5 @@ networks:
     driver: bridge
 
 volumes:
-  mysql-data:
+  postgres-data:
     driver: local
