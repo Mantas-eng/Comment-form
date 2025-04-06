@@ -1,36 +1,37 @@
-version: '3.8'
-
+version: '3.7'
 services:
   php:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: php-container
-    volumes:
-      - .:/var/www/html
+    container_name: php-comments
     environment:
-      - DB_HOST=mysql  # Naudojame 'mysql', nes Docker Compose pagal nutylėjimą sukuria tinklą
-      - DB_NAME=mano_baze
-      - DB_USER=root
-      - DB_PASS=rootpassword
-    depends_on:
-      - mysql  # PHP konteineris laukia, kol MySQL paslauga bus paruošta
-    networks:
-      - mynetwork
+      DB_HOST: mysql
+      DB_NAME: mano_baze
+      DB_USER: root
+      DB_PASS: rootpassword
     ports:
-      - "80:80"  # PHP konteineris naudoja prievadą 80
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
 
   mysql:
     image: mysql:5.7
-    container_name: mysql-container
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: mano_baze
+    volumes:
+      - mysql-data:/var/lib/mysql
     networks:
-      - mynetwork
-    ports:
-      - "3306:3306"  # MySQL konteineris naudoja prievadą 3306
+      - app-network
 
 networks:
-  mynetwork:
+  app-network:
     driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local

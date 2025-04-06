@@ -1,13 +1,12 @@
 <?php
 // Įtraukti autoloader'į, jei naudojate Composer
-require_once __DIR__ . '/vendor/autoload.php';
-
 // Naudoti Dotenv, kad nuskaitytumėte .env failą
+require_once __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Gauti duomenų bazės prisijungimo informaciją iš .env failo
-$host = 'mysql';  // Naudojame 'mysql', nes Docker Compose tinklui suteikėme tokią pavadinimo reikšmę
+$host = $_ENV['DB_HOST']; // Šis turėtų būti 'mysql', kaip nurodyta docker-compose.yml
 $db = $_ENV['DB_NAME'];
 $user = $_ENV['DB_USER'];
 $pass = $_ENV['DB_PASS'];
