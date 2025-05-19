@@ -1,5 +1,4 @@
 <?php
-// Įtraukti autoloader'į, jei naudojate Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -11,7 +10,7 @@ $db = $_ENV['DB_NAME'];
 $user = $_ENV['DB_USER'];
 $pass = $_ENV['DB_PASS'];
 
-$conn_string = "host=$host port=$port dbname=$db user=$user password=$pass";
+$conn_string = "host=$host port=$port dbname=$db user=$user password=$pass sslmode=require";
 $conn = pg_connect($conn_string);
 
 if (!$conn) {

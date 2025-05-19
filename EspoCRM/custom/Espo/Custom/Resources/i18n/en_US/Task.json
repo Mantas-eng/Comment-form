@@ -1,0 +1,7 @@
+{
+    "fields": {
+        "cTestCurrency": "Test Currency",
+        "cTestCurrencyCurrency": "Test Currency (Currency)",
+        "cTestCurrencyConverted": "Test Currency (Converted)"
+    }
+}

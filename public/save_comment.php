@@ -1,35 +1,27 @@
 <?php
-// Įtraukti autoloader'į, jei naudojate Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
-// Naudoti Dotenv, kad nuskaitytumėte .env failą
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-// Gauti duomenų bazės prisijungimo informaciją iš .env failo
-$host = $_ENV['DB_HOST'];  // Naudojame duomenis iš .env failo
-$port = $_ENV['DB_PORT'];  // PostgreSQL portas
+$host = $_ENV['DB_HOST'];  
+$port = $_ENV['DB_PORT'];  
 $db = $_ENV['DB_NAME'];
 $user = $_ENV['DB_USER'];
 $pass = $_ENV['DB_PASS'];
 
-// Sukuriame PostgreSQL prisijungimą
 $conn = pg_connect("host=$host port=$port dbname=$db user=$user password=$pass");
 
 if (!$conn) {
     die(json_encode(["error" => "Connection failed: " . pg_last_error()]));
 }
 
-// Tikriname, ar gauti reikalingi duomenys iš POST užklausos
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Išvalome duomenis prieš įrašant į duomenų bazę (apsaugos nuo XSS ir SQL injekcijų)
     $username = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
     $comment = isset($_POST['comment']) ? htmlspecialchars($_POST['comment']) : '';
-    $parent_id = isset($_POST['parent_id']) ? (int)$_POST['parent_id'] : 0;  // Jei nėra parent_id, priskiriame 0
+    $parent_id = isset($_POST['parent_id']) ? (int)$_POST['parent_id'] : 0;  
 
-    // Patikriname, ar visi būtini laukai yra užpildyti
     if (!empty($username) && !empty($comment)) {
-        // SQL užklausa komentarų įrašymui į duomenų bazę
         $sql = "INSERT INTO comments (username, comment, parent_id, created_at) VALUES ($1, $2, $3, NOW())";
         
         // Sukuriame paruoštą užklausą

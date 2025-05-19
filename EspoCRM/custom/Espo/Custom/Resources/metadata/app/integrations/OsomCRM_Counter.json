@@ -1,0 +1,8 @@
+{
+    "OsomCRM_Counter": {
+        "enabled": true,
+        "apiKey": "",
+        "secretKey": "",
+        "destinationUrl": ""
+    }
+}

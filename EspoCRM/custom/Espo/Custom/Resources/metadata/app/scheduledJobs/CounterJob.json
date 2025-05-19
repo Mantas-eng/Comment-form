@@ -1,0 +1,6 @@
+{
+    "job": "CounterJob",
+    "status": "Active",
+    "schedule": "0 * * * *", 
+    "description": "Runs every hour to update counters"
+}

@@ -1,0 +1,8 @@
+{
+    "fields": {
+        "cTestCurrency": {
+            "type": "currency",
+            "isCustom": true
+        }
+    }
+}

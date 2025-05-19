@@ -1,0 +1,8 @@
+{
+    "CounterJob": {
+        "label": "Counter Job",
+        "description": "Job to count records, users and disk size",
+        "interval": "0 0 * * *", 
+        "job": "Espo\\Modules\\Counter\\Jobs\\CounterJob"
+    }
+}
